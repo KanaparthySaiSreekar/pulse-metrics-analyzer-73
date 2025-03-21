@@ -33,9 +33,9 @@ const Navbar = () => {
             to="/" 
             className="flex items-center space-x-1 text-foreground"
           >
-            <span className="font-semibold text-xl tracking-tight">Pulse</span>
+            <span className="font-semibold text-xl tracking-tight">AidenAi</span>
             <ChevronRight className="h-4 w-4 text-primary" />
-            <span className="font-light text-xl tracking-tight">Metrics</span>
+            <span className="font-light text-xl tracking-tight">powered by TASC</span>
           </Link>
           
           <nav className="flex items-center space-x-1">

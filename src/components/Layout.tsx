@@ -44,7 +44,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </motion.main>
       <footer className="py-6 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} Pulse Metrics. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} AidenAi powered by TASC. All rights reserved.</p>
       </footer>
     </div>
   );
