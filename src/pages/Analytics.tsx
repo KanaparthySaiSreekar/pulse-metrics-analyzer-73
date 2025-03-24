@@ -46,7 +46,12 @@ const userData = {
       "Most positive feedback relates to customer service and interface design",
       "No significant negative feedback in the last 3 months",
       "Has recommended the product to colleagues multiple times"
-    ]
+    ],
+    sentimentBreakdown: {
+      positive: 85,
+      negative: 5,
+      neutral: 10
+    }
   },
   user2: {
     npsScore: "7.5",
@@ -75,7 +80,12 @@ const userData = {
       "Score has improved by 1.3 points over last quarter",
       "Most valued feature is the reporting dashboard",
       "Consider showcasing upcoming integration features to improve satisfaction"
-    ]
+    ],
+    sentimentBreakdown: {
+      positive: 40,
+      negative: 25,
+      neutral: 35
+    }
   },
   user3: {
     npsScore: "8.9",
@@ -104,7 +114,12 @@ const userData = {
       "Shows high engagement with new features (tries 80% within first week)",
       "Frequently mentions and values the reliability of the platform",
       "Has experienced only minor issues with system performance"
-    ]
+    ],
+    sentimentBreakdown: {
+      positive: 75,
+      negative: 5,
+      neutral: 20
+    }
   },
   user4: {
     npsScore: "6.3",
@@ -133,7 +148,12 @@ const userData = {
       "Performance issues mentioned in 60% of her feedback",
       "Usage pattern shows limited engagement with advanced features",
       "Satisfaction trending upward after recent UI improvements (+0.8 points)"
-    ]
+    ],
+    sentimentBreakdown: {
+      positive: 20,
+      negative: 45,
+      neutral: 35
+    }
   }
 };
 
@@ -145,7 +165,12 @@ const aggregateData = {
   responses: "1,248",
   satisfaction: 85,
   recommendation: 78,
-  responseRate: 92
+  responseRate: 92,
+  sentimentBreakdown: {
+    positive: 65,
+    negative: 15,
+    neutral: 20
+  }
 };
 
 const Analytics = () => {
@@ -284,12 +309,15 @@ const Analytics = () => {
         </div>
 
         {selectedUser === "all" ? (
-          <FeedbackSummary />
+          <FeedbackSummary 
+            sentimentBreakdown={aggregateData.sentimentBreakdown}
+          />
         ) : (
           <FeedbackSummary 
             userSpecific={true}
             feedbackData={userData[selectedUser as keyof typeof userData].feedback}
             insights={userData[selectedUser as keyof typeof userData].aiInsights}
+            sentimentBreakdown={userData[selectedUser as keyof typeof userData].sentimentBreakdown}
           />
         )}
       </div>
