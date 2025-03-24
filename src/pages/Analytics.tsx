@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import AnalyticsChart from "@/components/AnalyticsChart";
 import FeedbackSummary from "@/components/FeedbackSummary";
-import { BarChart3, TrendingUp, Heart, ThumbsUp, ThumbsDown, Users, Zap, UserRound } from "lucide-react";
+import { BarChart3, TrendingUp, Heart, ThumbsUp, ThumbsDown, Users, Zap, UserRound, Gauge } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 
@@ -21,7 +21,9 @@ const customers = [
 const userData = {
   user1: {
     npsScore: "9.2",
-    sentiment: "8.7",
+    sentimentPositive: "0.85",
+    sentimentNegative: "0.05",
+    sentimentNeutral: "0.10",
     promoter: "Yes",
     responses: "24",
     satisfaction: 92,
@@ -55,7 +57,9 @@ const userData = {
   },
   user2: {
     npsScore: "7.5",
-    sentiment: "6.8",
+    sentimentPositive: "0.40",
+    sentimentNegative: "0.25",
+    sentimentNeutral: "0.35",
     promoter: "No",
     responses: "18",
     satisfaction: 75,
@@ -89,7 +93,9 @@ const userData = {
   },
   user3: {
     npsScore: "8.9",
-    sentiment: "8.3",
+    sentimentPositive: "0.75",
+    sentimentNegative: "0.05",
+    sentimentNeutral: "0.20",
     promoter: "Yes",
     responses: "31",
     satisfaction: 87,
@@ -123,7 +129,9 @@ const userData = {
   },
   user4: {
     npsScore: "6.3",
-    sentiment: "5.9",
+    sentimentPositive: "0.20",
+    sentimentNegative: "0.45",
+    sentimentNeutral: "0.35",
     promoter: "No",
     responses: "15",
     satisfaction: 64,
@@ -160,7 +168,9 @@ const userData = {
 // Aggregate data (for "All Customers" view)
 const aggregateData = {
   npsScore: "8.4",
-  sentiment: "7.9",
+  sentimentPositive: "0.65",
+  sentimentNegative: "0.15",
+  sentimentNeutral: "0.20",
   promoter: "68%",
   responses: "1,248",
   satisfaction: 85,
@@ -254,28 +264,32 @@ const Analytics = () => {
             trendValue={parseFloat(displayData.npsScore) > 8 ? "+0.6" : "-0.3"}
           />
           <AnalyticsCard
-            title="Sentiment Score"
-            value={displayData.sentiment}
-            description="Last 30 days"
-            icon={TrendingUp}
-            trend={parseFloat(displayData.sentiment) > 7.5 ? "up" : "down"}
-            trendValue={parseFloat(displayData.sentiment) > 7.5 ? "+0.3" : "-0.2"}
-          />
-          <AnalyticsCard
-            title={selectedUser === "all" ? "Promoters" : "Promoter Status"}
-            value={displayData.promoter}
-            description={selectedUser === "all" ? "Scores 9-10" : "Based on NPS"}
+            title="Positive Sentiment"
+            value={displayData.sentimentPositive}
+            description="Scale of 0 to 1"
             icon={ThumbsUp}
-            trend={selectedUser === "all" || displayData.promoter === "Yes" ? "up" : "down"}
-            trendValue={selectedUser === "all" ? "+5%" : ""}
+            iconClassName="text-green-500"
+            trend={parseFloat(displayData.sentimentPositive) > 0.7 ? "up" : "down"}
+            trendValue={parseFloat(displayData.sentimentPositive) > 0.7 ? "+0.05" : "-0.03"}
           />
           <AnalyticsCard
-            title="Total Responses"
-            value={displayData.responses}
-            description="Last 30 days"
-            icon={Users}
-            trend="up"
-            trendValue={selectedUser === "all" ? "+124" : ""}
+            title="Negative Sentiment"
+            value={displayData.sentimentNegative}
+            description="Scale of 0 to 1"
+            icon={ThumbsDown}
+            iconClassName="text-red-500"
+            trend={parseFloat(displayData.sentimentNegative) < 0.2 ? "up" : "down"}
+            trendValue={parseFloat(displayData.sentimentNegative) < 0.2 ? "-0.02" : "+0.04"}
+            trendInverseColor={true}
+          />
+          <AnalyticsCard
+            title="Neutral Sentiment"
+            value={displayData.sentimentNeutral}
+            description="Scale of 0 to 1"
+            icon={Gauge}
+            iconClassName="text-orange-500"
+            trend="none"
+            trendValue=""
           />
         </div>
 

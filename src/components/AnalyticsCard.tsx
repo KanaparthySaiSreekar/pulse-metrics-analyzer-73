@@ -1,17 +1,18 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 
 interface AnalyticsCardProps {
   title: string;
-  value: string | number;
-  description?: string;
-  icon?: LucideIcon;
-  trend?: "up" | "down" | "neutral";
-  trendValue?: string;
+  value: string;
+  description: string;
+  icon: React.ElementType;
+  iconClassName?: string;
+  trend: "up" | "down" | "none";
+  trendValue: string;
+  trendInverseColor?: boolean;
   className?: string;
 }
 
@@ -20,52 +21,53 @@ const AnalyticsCard = ({
   value,
   description,
   icon: Icon,
+  iconClassName,
   trend,
   trendValue,
+  trendInverseColor = false,
   className,
 }: AnalyticsCardProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      whileHover={{ y: -2 }}
-      className="h-full"
-    >
-      <Card className={cn("h-full overflow-hidden border-white/20 bg-card/70 backdrop-blur-sm", className)}>
-        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            {title}
-          </CardTitle>
-          {Icon && (
-            <div className="bg-secondary/50 p-2 rounded-full">
-              <Icon className="h-4 w-4 text-muted-foreground" />
-            </div>
-          )}
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{value}</div>
-          {(description || trendValue) && (
-            <div className="flex items-center mt-1">
-              {trend && (
-                <div
-                  className={cn(
-                    "text-xs font-medium mr-2 flex items-center",
-                    trend === "up" && "text-green-500",
-                    trend === "down" && "text-red-500"
-                  )}
-                >
-                  {trendValue}
-                </div>
+    <Card className={cn("border-white/20 bg-card/70 backdrop-blur-sm", className)}>
+      <CardContent className="p-6">
+        <div className="flex justify-between items-start">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground mb-1">
+              {title}
+            </p>
+            <h3 className="text-2xl font-bold">{value}</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              {description}
+            </p>
+          </div>
+          <div className={cn("p-2 rounded-full bg-primary/10", iconClassName ? "" : "text-primary")}>
+            <Icon className={cn("h-5 w-5", iconClassName)} />
+          </div>
+        </div>
+
+        {trend !== "none" && (
+          <div className="mt-4 flex items-center">
+            <div
+              className={cn(
+                "flex items-center text-xs font-medium rounded-full px-1.5 py-0.5",
+                trend === "up" && !trendInverseColor && "text-green-500 bg-green-500/10",
+                trend === "down" && !trendInverseColor && "text-red-500 bg-red-500/10",
+                trend === "up" && trendInverseColor && "text-red-500 bg-red-500/10",
+                trend === "down" && trendInverseColor && "text-green-500 bg-green-500/10"
               )}
-              {description && (
-                <p className="text-xs text-muted-foreground">{description}</p>
+            >
+              {trend === "up" ? (
+                <ArrowUpIcon className="h-3 w-3 mr-1" />
+              ) : (
+                <ArrowDownIcon className="h-3 w-3 mr-1" />
               )}
+              {trendValue}
             </div>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
+            <span className="text-xs text-muted-foreground ml-2">vs previous period</span>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
