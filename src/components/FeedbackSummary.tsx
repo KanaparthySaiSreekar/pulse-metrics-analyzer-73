@@ -1,7 +1,9 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { MessageSquare, ThumbsUp, ThumbsDown, Sparkles, BarChart } from "lucide-react";
 
@@ -94,12 +96,13 @@ const FeedbackSummary = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border">
-          <div className="p-4 lg:col-span-2">
+        <div className="grid grid-cols-1 divide-y divide-border">
+          {/* Feedback Comments Section */}
+          <div className="p-4">
             <h4 className="text-sm font-medium mb-3">
               {userSpecific ? "Customer Comments" : "Latest Comments"}
             </h4>
-            <ScrollArea className="h-[240px] pr-4">
+            <ScrollArea className="h-[180px] pr-4">
               <div className="space-y-4">
                 {feedbackData.map((item) => (
                   <div
@@ -131,80 +134,78 @@ const FeedbackSummary = ({
             </ScrollArea>
           </div>
           
+          {/* Enhanced AI Insights Section */}
           <div className="p-4">
-            <div className="space-y-5">
-              <div>
-                <h4 className="text-sm font-medium flex items-center mb-3">
-                  <Sparkles className="h-4 w-4 mr-1 text-primary" />
-                  {userSpecific ? "AI Summary" : "AI Insights"}
-                </h4>
-                <ScrollArea className="h-[120px] pr-4">
-                  <div className="space-y-3">
-                    {insights.map((insight, index) => (
-                      <div
-                        key={index}
-                        className="p-2 rounded-md bg-primary/5 border border-primary/10"
-                      >
-                        <p className="text-sm">{insight}</p>
-                      </div>
-                    ))}
+            <h4 className="text-lg font-medium flex items-center mb-4">
+              <Sparkles className="h-5 w-5 mr-2 text-primary" />
+              {userSpecific ? "AI Summary" : "AI Insights"}
+            </h4>
+            <ScrollArea className="h-[160px] pr-4 mb-6">
+              <div className="space-y-3">
+                {insights.map((insight, index) => (
+                  <div
+                    key={index}
+                    className="p-3 rounded-md bg-primary/5 border border-primary/10"
+                  >
+                    <p className="text-sm">{insight}</p>
                   </div>
-                </ScrollArea>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+          
+          {/* Enhanced Sentiment Breakdown Section */}
+          <div className="p-4 pb-6">
+            <h4 className="text-lg font-medium flex items-center mb-4">
+              <BarChart className="h-5 w-5 mr-2 text-primary" />
+              Sentiment Analysis
+            </h4>
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="flex items-center text-green-500 font-medium">
+                    <ThumbsUp className="h-4 w-4 mr-2" />
+                    Positive
+                  </span>
+                  <span className="font-medium">{sentimentBreakdown.positive}%</span>
+                </div>
+                <Progress value={sentimentBreakdown.positive} className="h-2.5 bg-secondary/50">
+                  <div
+                    className="h-full bg-green-500 rounded-full"
+                    style={{ width: `${sentimentBreakdown.positive}%` }}
+                  ></div>
+                </Progress>
               </div>
               
-              <div>
-                <h4 className="text-sm font-medium flex items-center mb-3">
-                  <BarChart className="h-4 w-4 mr-1 text-primary" />
-                  Sentiment Breakdown
-                </h4>
-                <div className="space-y-2.5">
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="flex items-center text-green-500">
-                        <ThumbsUp className="h-3 w-3 mr-1" />
-                        Positive
-                      </span>
-                      <span className="font-medium">{sentimentBreakdown.positive}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-green-500 rounded-full"
-                        style={{ width: `${sentimentBreakdown.positive}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="flex items-center text-red-500">
-                        <ThumbsDown className="h-3 w-3 mr-1" />
-                        Negative
-                      </span>
-                      <span className="font-medium">{sentimentBreakdown.negative}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-red-500 rounded-full"
-                        style={{ width: `${sentimentBreakdown.negative}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="flex items-center text-orange-500">
-                        Neutral
-                      </span>
-                      <span className="font-medium">{sentimentBreakdown.neutral}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-orange-500 rounded-full"
-                        style={{ width: `${sentimentBreakdown.neutral}%` }}
-                      ></div>
-                    </div>
-                  </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="flex items-center text-red-500 font-medium">
+                    <ThumbsDown className="h-4 w-4 mr-2" />
+                    Negative
+                  </span>
+                  <span className="font-medium">{sentimentBreakdown.negative}%</span>
                 </div>
+                <Progress value={sentimentBreakdown.negative} className="h-2.5 bg-secondary/50">
+                  <div
+                    className="h-full bg-red-500 rounded-full"
+                    style={{ width: `${sentimentBreakdown.negative}%` }}
+                  ></div>
+                </Progress>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="flex items-center text-orange-500 font-medium">
+                    Neutral
+                  </span>
+                  <span className="font-medium">{sentimentBreakdown.neutral}%</span>
+                </div>
+                <Progress value={sentimentBreakdown.neutral} className="h-2.5 bg-secondary/50">
+                  <div
+                    className="h-full bg-orange-500 rounded-full"
+                    style={{ width: `${sentimentBreakdown.neutral}%` }}
+                  ></div>
+                </Progress>
               </div>
             </div>
           </div>
