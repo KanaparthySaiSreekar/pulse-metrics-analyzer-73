@@ -21,7 +21,7 @@ interface FeedbackSummaryProps {
 }
 
 // Sample feedback data
-const defaultFeedbackData = [
+const defaultFeedbackData: FeedbackItem[] = [
   {
     id: 1,
     sentiment: "positive",

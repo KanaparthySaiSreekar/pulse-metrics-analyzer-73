@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -31,13 +30,13 @@ const userData = {
     feedback: [
       {
         id: 1,
-        sentiment: "positive",
+        sentiment: "positive" as const,
         score: 9,
         content: "The interface is intuitive and the customer service is exceptional. Very satisfied with my experience."
       },
       {
         id: 2,
-        sentiment: "positive",
+        sentiment: "positive" as const,
         score: 10,
         content: "The new features have made my workflow so much more efficient. Loving the updates!"
       }
@@ -60,13 +59,13 @@ const userData = {
     feedback: [
       {
         id: 1,
-        sentiment: "neutral",
+        sentiment: "neutral" as const,
         score: 7,
         content: "Good product but has some room for improvement in the reporting features."
       },
       {
         id: 2,
-        sentiment: "neutral",
+        sentiment: "neutral" as const,
         score: 8,
         content: "I like the platform but wish it had better integration with other tools."
       }
@@ -89,13 +88,13 @@ const userData = {
     feedback: [
       {
         id: 1,
-        sentiment: "positive",
+        sentiment: "positive" as const,
         score: 9,
         content: "Great experience overall. The new features added last month are incredibly helpful."
       },
       {
         id: 2,
-        sentiment: "positive",
+        sentiment: "positive" as const,
         score: 9,
         content: "The platform is reliable and the support team is excellent."
       }
@@ -118,13 +117,13 @@ const userData = {
     feedback: [
       {
         id: 1,
-        sentiment: "negative",
+        sentiment: "negative" as const,
         score: 6,
         content: "It's okay but I find it confusing to navigate sometimes. Could be more user-friendly."
       },
       {
         id: 2,
-        sentiment: "neutral",
+        sentiment: "neutral" as const,
         score: 7,
         content: "Decent features but performance has been slow lately."
       }
