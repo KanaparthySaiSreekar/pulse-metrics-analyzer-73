@@ -14,6 +14,7 @@ interface AnalyticsCardProps {
   trendValue: string;
   trendInverseColor?: boolean;
   className?: string;
+  iconBgClassName?: string;
 }
 
 const AnalyticsCard = ({
@@ -26,6 +27,7 @@ const AnalyticsCard = ({
   trendValue,
   trendInverseColor = false,
   className,
+  iconBgClassName,
 }: AnalyticsCardProps) => {
   return (
     <Card className={cn("border-white/20 bg-card/70 backdrop-blur-sm", className)}>
@@ -40,7 +42,7 @@ const AnalyticsCard = ({
               {description}
             </p>
           </div>
-          <div className={cn("p-2 rounded-full bg-primary/10", iconClassName ? "" : "text-primary")}>
+          <div className={cn("p-2 rounded-full", iconBgClassName || "bg-primary/10", iconClassName ? "" : "text-primary")}>
             <Icon className={cn("h-5 w-5", iconClassName)} />
           </div>
         </div>

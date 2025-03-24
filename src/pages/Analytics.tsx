@@ -4,11 +4,10 @@ import Layout from "@/components/Layout";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import AnalyticsChart from "@/components/AnalyticsChart";
 import FeedbackSummary from "@/components/FeedbackSummary";
-import { BarChart3, TrendingUp, Heart, ThumbsUp, ThumbsDown, Users, Zap, UserRound, Gauge } from "lucide-react";
+import { BarChart3, TrendingUp, Heart, ThumbsUp, ThumbsDown, Users, Zap, UserRound, Gauge, MessageSquare } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 
-// Sample user data for the dropdown
 const customers = [
   { id: "all", name: "All Customers" },
   { id: "user1", name: "John Smith" },
@@ -17,7 +16,6 @@ const customers = [
   { id: "user4", name: "Sarah Wilson" },
 ];
 
-// User-specific data
 const userData = {
   user1: {
     npsScore: "9.2",
@@ -165,7 +163,6 @@ const userData = {
   }
 };
 
-// Aggregate data (for "All Customers" view)
 const aggregateData = {
   npsScore: "8.4",
   sentimentPositive: "0.65",
@@ -186,7 +183,6 @@ const aggregateData = {
 const Analytics = () => {
   const [selectedUser, setSelectedUser] = useState("all");
   
-  // Choose between aggregate data or user-specific data
   const displayData = selectedUser === "all" 
     ? aggregateData 
     : userData[selectedUser as keyof typeof userData];
@@ -254,21 +250,24 @@ const Analytics = () => {
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <AnalyticsCard
-            title="Average NPS Score"
-            value={displayData.npsScore}
-            description="Last 30 days"
-            icon={BarChart3}
-            trend={parseFloat(displayData.npsScore) > 8 ? "up" : "down"}
-            trendValue={parseFloat(displayData.npsScore) > 8 ? "+0.6" : "-0.3"}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
+          <div className="lg:col-span-2">
+            <AnalyticsCard
+              title="Average NPS Score"
+              value={displayData.npsScore}
+              description="Last 30 days"
+              icon={BarChart3}
+              trend={parseFloat(displayData.npsScore) > 8 ? "up" : "down"}
+              trendValue={parseFloat(displayData.npsScore) > 8 ? "+0.6" : "-0.3"}
+            />
+          </div>
           <AnalyticsCard
             title="Positive Sentiment"
             value={displayData.sentimentPositive}
             description="Scale of 0 to 1"
             icon={ThumbsUp}
             iconClassName="text-green-500"
+            iconBgClassName="bg-green-500/10"
             trend={parseFloat(displayData.sentimentPositive) > 0.7 ? "up" : "down"}
             trendValue={parseFloat(displayData.sentimentPositive) > 0.7 ? "+0.05" : "-0.03"}
           />
@@ -278,6 +277,7 @@ const Analytics = () => {
             description="Scale of 0 to 1"
             icon={ThumbsDown}
             iconClassName="text-red-500"
+            iconBgClassName="bg-red-500/10"
             trend={parseFloat(displayData.sentimentNegative) < 0.2 ? "up" : "down"}
             trendValue={parseFloat(displayData.sentimentNegative) < 0.2 ? "-0.02" : "+0.04"}
             trendInverseColor={true}
@@ -288,8 +288,29 @@ const Analytics = () => {
             description="Scale of 0 to 1"
             icon={Gauge}
             iconClassName="text-orange-500"
+            iconBgClassName="bg-orange-500/10"
             trend="none"
             trendValue=""
+          />
+          <AnalyticsCard
+            title={selectedUser === "all" ? "Promoters" : "Promoter Status"}
+            value={displayData.promoter}
+            description={selectedUser === "all" ? "Of total customers" : "Customer type"}
+            icon={Heart}
+            iconClassName="text-pink-500"
+            iconBgClassName="bg-pink-500/10"
+            trend="none"
+            trendValue=""
+          />
+          <AnalyticsCard
+            title="Total Responses"
+            value={displayData.responses}
+            description="Feedback collected"
+            icon={MessageSquare}
+            iconClassName="text-blue-500"
+            iconBgClassName="bg-blue-500/10"
+            trend="up"
+            trendValue="+12%"
           />
         </div>
 
