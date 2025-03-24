@@ -6,12 +6,22 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { MessageSquare, ThumbsUp, ThumbsDown, Sparkles } from "lucide-react";
 
+interface FeedbackItem {
+  id: number;
+  sentiment: "positive" | "negative" | "neutral";
+  score: number;
+  content: string;
+}
+
 interface FeedbackSummaryProps {
   className?: string;
+  userSpecific?: boolean;
+  feedbackData?: FeedbackItem[];
+  insights?: string[];
 }
 
 // Sample feedback data
-const feedbackData = [
+const defaultFeedbackData = [
   {
     id: 1,
     sentiment: "positive",
@@ -44,30 +54,39 @@ const feedbackData = [
   },
 ];
 
-// AI-generated insights
-const insights = [
+// Default AI-generated insights
+const defaultInsights = [
   "Customers consistently praise the intuitive interface design",
   "Payment processing issues mentioned in 15% of negative feedback",
   "Delivery time is a common concern even among satisfied customers",
   "Feature requests focus primarily on customization options",
 ];
 
-const FeedbackSummary = ({ className }: FeedbackSummaryProps) => {
+const FeedbackSummary = ({ 
+  className,
+  userSpecific = false,
+  feedbackData = defaultFeedbackData,
+  insights = defaultInsights
+}: FeedbackSummaryProps) => {
   return (
     <Card className={cn("border-white/20 bg-card/70 backdrop-blur-sm", className)}>
       <CardHeader>
         <CardTitle className="flex items-center">
           <MessageSquare className="h-5 w-5 mr-2 text-primary" />
-          Recent Feedback
+          {userSpecific ? "Customer Feedback" : "Recent Feedback"}
         </CardTitle>
         <CardDescription>
-          Latest user submissions and AI-generated insights
+          {userSpecific 
+            ? "Customer submissions and AI-generated insights" 
+            : "Latest user submissions and AI-generated insights"}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
         <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border">
           <div className="p-4 lg:col-span-2">
-            <h4 className="text-sm font-medium mb-3">Latest Comments</h4>
+            <h4 className="text-sm font-medium mb-3">
+              {userSpecific ? "Customer Comments" : "Latest Comments"}
+            </h4>
             <ScrollArea className="h-[240px] pr-4">
               <div className="space-y-4">
                 {feedbackData.map((item) => (
@@ -103,7 +122,7 @@ const FeedbackSummary = ({ className }: FeedbackSummaryProps) => {
           <div className="p-4">
             <h4 className="text-sm font-medium flex items-center mb-3">
               <Sparkles className="h-4 w-4 mr-1 text-primary" />
-              AI Insights
+              {userSpecific ? "AI Summary" : "AI Insights"}
             </h4>
             <ScrollArea className="h-[240px] pr-4">
               <div className="space-y-3">

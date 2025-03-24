@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import AnalyticsChart from "@/components/AnalyticsChart";
 import FeedbackSummary from "@/components/FeedbackSummary";
-import { BarChart3, TrendingUp, Heart, ThumbsUp, Users, Zap, UserRound } from "lucide-react";
+import { BarChart3, TrendingUp, Heart, ThumbsUp, ThumbsDown, Users, Zap, UserRound } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 
@@ -27,7 +27,27 @@ const userData = {
     responses: "24",
     satisfaction: 92,
     recommendation: 88,
-    responseRate: 95
+    responseRate: 95,
+    feedback: [
+      {
+        id: 1,
+        sentiment: "positive",
+        score: 9,
+        content: "The interface is intuitive and the customer service is exceptional. Very satisfied with my experience."
+      },
+      {
+        id: 2,
+        sentiment: "positive",
+        score: 10,
+        content: "The new features have made my workflow so much more efficient. Loving the updates!"
+      }
+    ],
+    aiInsights: [
+      "John consistently rates product usability very highly (avg 9.5/10)",
+      "Most positive feedback relates to customer service and interface design",
+      "No significant negative feedback in the last 3 months",
+      "Has recommended the product to colleagues multiple times"
+    ]
   },
   user2: {
     npsScore: "7.5",
@@ -36,7 +56,27 @@ const userData = {
     responses: "18",
     satisfaction: 75,
     recommendation: 70,
-    responseRate: 85
+    responseRate: 85,
+    feedback: [
+      {
+        id: 1,
+        sentiment: "neutral",
+        score: 7,
+        content: "Good product but has some room for improvement in the reporting features."
+      },
+      {
+        id: 2,
+        sentiment: "neutral",
+        score: 8,
+        content: "I like the platform but wish it had better integration with other tools."
+      }
+    ],
+    aiInsights: [
+      "Emily's feedback consistently mentions need for better integrations",
+      "Score has improved by 1.3 points over last quarter",
+      "Most valued feature is the reporting dashboard",
+      "Consider showcasing upcoming integration features to improve satisfaction"
+    ]
   },
   user3: {
     npsScore: "8.9",
@@ -45,7 +85,27 @@ const userData = {
     responses: "31",
     satisfaction: 87,
     recommendation: 82,
-    responseRate: 90
+    responseRate: 90,
+    feedback: [
+      {
+        id: 1,
+        sentiment: "positive",
+        score: 9,
+        content: "Great experience overall. The new features added last month are incredibly helpful."
+      },
+      {
+        id: 2,
+        sentiment: "positive",
+        score: 9,
+        content: "The platform is reliable and the support team is excellent."
+      }
+    ],
+    aiInsights: [
+      "Michael has been a consistent promoter for over 6 months",
+      "Shows high engagement with new features (tries 80% within first week)",
+      "Frequently mentions and values the reliability of the platform",
+      "Has experienced only minor issues with system performance"
+    ]
   },
   user4: {
     npsScore: "6.3",
@@ -54,7 +114,27 @@ const userData = {
     responses: "15",
     satisfaction: 64,
     recommendation: 58,
-    responseRate: 80
+    responseRate: 80,
+    feedback: [
+      {
+        id: 1,
+        sentiment: "negative",
+        score: 6,
+        content: "It's okay but I find it confusing to navigate sometimes. Could be more user-friendly."
+      },
+      {
+        id: 2,
+        sentiment: "neutral",
+        score: 7,
+        content: "Decent features but performance has been slow lately."
+      }
+    ],
+    aiInsights: [
+      "Sarah finds the navigation confusing - consider offering a guided tour",
+      "Performance issues mentioned in 60% of her feedback",
+      "Usage pattern shows limited engagement with advanced features",
+      "Satisfaction trending upward after recent UI improvements (+0.8 points)"
+    ]
   }
 };
 
@@ -207,44 +287,11 @@ const Analytics = () => {
         {selectedUser === "all" ? (
           <FeedbackSummary />
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
-            className="border-white/20 bg-card/70 backdrop-blur-sm border rounded-lg p-5"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">Recent Feedback</h3>
-              <span className="text-xs text-muted-foreground">Last 30 days</span>
-            </div>
-            <Separator className="mb-4" />
-            <div className="space-y-4">
-              {selectedUser === "user1" && (
-                <>
-                  <FeedbackItem date="Jun 12, 2023" nps={9} text="The product exceeds my expectations. The customer service team is always responsive and helpful." />
-                  <FeedbackItem date="May 28, 2023" nps={10} text="Very intuitive interface. I've recommended it to several colleagues already." />
-                </>
-              )}
-              {selectedUser === "user2" && (
-                <>
-                  <FeedbackItem date="Jun 15, 2023" nps={7} text="Good product but has some room for improvement in the reporting features." />
-                  <FeedbackItem date="May 22, 2023" nps={8} text="I like the platform but wish it had better integration with other tools." />
-                </>
-              )}
-              {selectedUser === "user3" && (
-                <>
-                  <FeedbackItem date="Jun 10, 2023" nps={9} text="Great experience overall. The new features added last month are incredibly helpful." />
-                  <FeedbackItem date="May 15, 2023" nps={9} text="The platform is reliable and the support team is excellent." />
-                </>
-              )}
-              {selectedUser === "user4" && (
-                <>
-                  <FeedbackItem date="Jun 8, 2023" nps={6} text="It's okay but I find it confusing to navigate sometimes. Could be more user-friendly." />
-                  <FeedbackItem date="May 20, 2023" nps={7} text="Decent features but performance has been slow lately." />
-                </>
-              )}
-            </div>
-          </motion.div>
+          <FeedbackSummary 
+            userSpecific={true}
+            feedbackData={userData[selectedUser as keyof typeof userData].feedback}
+            insights={userData[selectedUser as keyof typeof userData].aiInsights}
+          />
         )}
       </div>
     </Layout>
