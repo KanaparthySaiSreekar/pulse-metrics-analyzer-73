@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -250,8 +251,9 @@ const Analytics = () => {
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
-          <div className="lg:col-span-2">
+        {/* First row: NPS Score and Total Responses at the same size */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
             <AnalyticsCard
               title="Average NPS Score"
               value={displayData.npsScore}
@@ -261,6 +263,22 @@ const Analytics = () => {
               trendValue={parseFloat(displayData.npsScore) > 8 ? "+0.6" : "-0.3"}
             />
           </div>
+          <div>
+            <AnalyticsCard
+              title="Total Responses"
+              value={displayData.responses}
+              description="Feedback collected"
+              icon={MessageSquare}
+              iconClassName="text-blue-500"
+              iconBgClassName="bg-blue-500/10"
+              trend="up"
+              trendValue="+12%"
+            />
+          </div>
+        </div>
+
+        {/* Second row: Sentiment scores and Promoter status */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <AnalyticsCard
             title="Positive Sentiment"
             value={displayData.sentimentPositive}
@@ -301,16 +319,6 @@ const Analytics = () => {
             iconBgClassName="bg-pink-500/10"
             trend="none"
             trendValue=""
-          />
-          <AnalyticsCard
-            title="Total Responses"
-            value={displayData.responses}
-            description="Feedback collected"
-            icon={MessageSquare}
-            iconClassName="text-blue-500"
-            iconBgClassName="bg-blue-500/10"
-            trend="up"
-            trendValue="+12%"
           />
         </div>
 
