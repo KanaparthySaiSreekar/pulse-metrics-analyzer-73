@@ -34,29 +34,31 @@ const pageVariants = {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex flex-col bg-background w-full">
-        <SidebarNav />
-        <SidebarInset>
-          <div className="sticky top-0 z-10 flex items-center justify-between p-4 backdrop-blur-lg border-b border-border/40">
-            <SidebarTrigger />
-            <ThemeToggle />
-          </div>
-          <motion.main
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={pageVariants}
-            className="flex-1 w-full mx-auto px-4 py-6 sm:px-6 lg:px-8 max-w-7xl"
-          >
-            {children}
-          </motion.main>
-          <footer className="py-6 text-center text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} TASC Insights. All rights reserved.</p>
-          </footer>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <div className="min-h-screen flex flex-col bg-background w-full">
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          <SidebarNav />
+          <SidebarInset>
+            <div className="sticky top-0 z-10 flex items-center justify-between p-4 backdrop-blur-lg border-b border-border/40">
+              <SidebarTrigger />
+              <ThemeToggle />
+            </div>
+            <motion.main
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              className="flex-1 w-full mx-auto px-4 py-6 sm:px-6 lg:px-8 max-w-7xl"
+            >
+              {children}
+            </motion.main>
+            <footer className="py-6 text-center text-sm text-muted-foreground">
+              <p>© {new Date().getFullYear()} TASC Insights. All rights reserved.</p>
+            </footer>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </div>
   );
 };
 
