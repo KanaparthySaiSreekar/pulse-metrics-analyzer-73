@@ -1,99 +1,90 @@
 
 import React from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, BarChart3, MessageSquare, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { user, isAuthenticated } = useAuth();
+
   return (
     <Layout>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 md:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-block mb-3 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-            Customer-Centric Insights
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
-            Transform Feedback Into <br className="hidden sm:block" />
-            <span className="text-primary">Actionable Insights</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Collect, analyze and visualize customer feedback with AI-powered sentiment analysis
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link to="/survey">
-              <Button size="lg" className="group">
-                Start Collecting Feedback
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-            <Link to="/analytics">
-              <Button size="lg" variant="outline">
-                View Analytics Dashboard
-              </Button>
-            </Link>
-          </div>
-        </motion.div>
+      <div className="container px-4 py-12 mx-auto">
+        <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              Welcome to <span className="text-primary">TASC Insights</span>
+            </h1>
+            <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto">
+              Collect and analyze feedback effortlessly with our powerful customer satisfaction platform.
+            </p>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mt-8 flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center"
+          >
+            {isAuthenticated ? (
+              <Button asChild size="lg" className="w-full">
+                <Link to={user?.role === "admin" ? "/analytics" : "/survey"}>
+                  Go to {user?.role === "admin" ? "Dashboard" : "Survey"}
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild size="lg" className="w-full">
+                <Link to="/login">Log In</Link>
+              </Button>
+            )}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
             <FeatureCard
-              icon={MessageSquare}
               title="Collect Feedback"
-              description="Gather NPS scores and detailed feedback from your customers with an elegant, user-friendly survey interface."
-              delay={0.1}
+              description="Gather customer feedback through well-designed surveys."
+              icon="📝"
             />
             <FeatureCard
-              icon={TrendingUp}
-              title="Sentiment Analysis"
-              description="Automatically analyze feedback text to determine sentiment, uncovering the emotions behind customer responses."
-              delay={0.2}
+              title="Analyze Results"
+              description="Study customer satisfaction with powerful analytics tools."
+              icon="📊"
             />
             <FeatureCard
-              icon={BarChart3}
-              title="Visual Analytics"
-              description="Transform raw data into beautiful, insightful visualizations that help you make better business decisions."
-              delay={0.3}
+              title="Take Action"
+              description="Implement changes based on valuable customer insights."
+              icon="🚀"
             />
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </Layout>
   );
 };
 
 interface FeatureCardProps {
-  icon: React.FC<{ className?: string }>;
   title: string;
   description: string;
-  delay: number;
+  icon: string;
 }
 
-const FeatureCard = ({ icon: Icon, title, description, delay }: FeatureCardProps) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-      className="bg-card/70 backdrop-blur-sm border border-white/20 rounded-lg p-6 hover:shadow-md transition-shadow"
-    >
-      <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-        <Icon className="h-6 w-6 text-primary" />
-      </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </motion.div>
-  );
-};
+const FeatureCard = ({ title, description, icon }: FeatureCardProps) => (
+  <div className="bg-card/70 backdrop-blur-sm border rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="text-3xl mb-4">{icon}</div>
+    <h3 className="text-lg font-medium mb-2">{title}</h3>
+    <p className="text-muted-foreground">{description}</p>
+  </div>
+);
 
 export default Index;
