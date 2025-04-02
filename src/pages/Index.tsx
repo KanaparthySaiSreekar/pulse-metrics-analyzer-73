@@ -39,9 +39,14 @@ const Index = () => {
                 </Link>
               </Button>
             ) : (
-              <Button asChild size="lg" className="w-full">
-                <Link to="/login">Log In</Link>
-              </Button>
+              <>
+                <Button asChild size="lg" className="w-full">
+                  <Link to="/login">Log In</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="w-full">
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+              </>
             )}
           </motion.div>
 

@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,7 +81,7 @@ const Login = () => {
                   </ul>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex flex-col space-y-4">
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <span className="flex items-center">
@@ -92,6 +92,12 @@ const Login = () => {
                     "Log in"
                   )}
                 </Button>
+                <div className="text-sm text-center text-muted-foreground">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="text-primary hover:underline">
+                    Sign up
+                  </Link>
+                </div>
               </CardFooter>
             </form>
           </Card>

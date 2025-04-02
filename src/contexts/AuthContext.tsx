@@ -18,9 +18,12 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   hasRole: (role: Role) => boolean;
+  register: (name: string, email: string, password: string, role: Role) => Promise<void>;
+  users: Array<{ id: string; email: string; password: string; name: string; role: Role }>;
 }
 
-const mockUsers = [
+// Initial mock users
+const initialMockUsers = [
   { id: "1", email: "admin@tasc.com", password: "admin123", name: "Admin User", role: "admin" as Role },
   { id: "2", email: "customer1@example.com", password: "customer123", name: "John Smith", role: "customer" as Role },
   { id: "3", email: "customer2@example.com", password: "customer123", name: "Emily Johnson", role: "customer" as Role },
@@ -45,6 +48,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [mockUsers, setMockUsers] = useState(initialMockUsers);
   const navigate = useNavigate();
 
   // Check for existing session on mount
@@ -59,6 +63,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem("tasc_user");
       }
     }
+    
+    // Load stored users from localStorage
+    const storedUsers = localStorage.getItem("tasc_users");
+    if (storedUsers) {
+      try {
+        const parsedUsers = JSON.parse(storedUsers);
+        setMockUsers(parsedUsers);
+      } catch (error) {
+        console.error("Failed to parse stored users:", error);
+      }
+    } else {
+      // Initialize localStorage with default users if not present
+      localStorage.setItem("tasc_users", JSON.stringify(initialMockUsers));
+    }
+    
     setIsLoading(false);
   }, []);
 
@@ -101,6 +120,44 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const register = async (name: string, email: string, password: string, role: Role) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      
+      // Check if user already exists
+      const existingUser = mockUsers.find((u) => u.email === email);
+      if (existingUser) {
+        throw new Error("User with this email already exists");
+      }
+      
+      // Create new user
+      const newUser = {
+        id: (mockUsers.length + 1).toString(),
+        email,
+        password,
+        name,
+        role,
+      };
+      
+      // Update users list
+      const updatedUsers = [...mockUsers, newUser];
+      setMockUsers(updatedUsers);
+      
+      // Save to localStorage
+      localStorage.setItem("tasc_users", JSON.stringify(updatedUsers));
+      
+      toast.success("User registered successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration failed:", error);
+      toast.error(error instanceof Error ? error.message : "Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("tasc_user");
@@ -119,6 +176,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     hasRole,
+    register,
+    users: mockUsers,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
